@@ -18,12 +18,15 @@ import com.example.housify.ui.HousifyHomeScreen
 @Composable
 fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
+        //Default navigation to splash screen
         composable(route = Screen.Splash.route) {
             SplashScreen(navController)
         }
+        //Navigate to a Homescreen loader
         composable(route = Screen.Home.route){
             HousifyHomeScreen(navRootController = navController)
         }
+        //Navigate to screen of each homes details
         composable(route = Screen.Details.route){
             HousifyDetailsScreen()
         }

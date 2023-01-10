@@ -4,23 +4,18 @@ package com.example.housify.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.housify.navigation.BottomBarScreen
 import com.example.housify.navigation.HomeNavGraph
-import com.example.housify.navigation.Screen
+
 
 
 @Composable
@@ -32,17 +27,7 @@ fun HousifyHomeScreen(navController: NavHostController = rememberNavController()
     }
 
 }
-@Composable
-fun SearchContent(name: String, onClick: () -> Unit) {
-    Box(
-        modifier = androidx.compose.ui.Modifier.fillMaxSize(),
-    ) {
-        Button(onClick = {onClick() }) {
-            Text("back")
-        }
-    }
 
-}
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
