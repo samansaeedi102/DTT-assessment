@@ -1,15 +1,15 @@
 package com.example.housify.ui
 
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -28,27 +28,20 @@ fun HousifyHomeScreen(navController: NavHostController = rememberNavController()
     Scaffold(
         bottomBar = {  BottomBar(navController = navController) }
     ) {
-        HomeNavGraph(navController = navController)
-        Button(onClick = {navRootController.navigate(Screen.Details.route) }) {
-            Text(text = "by")
-        }
+        HomeNavGraph(navController = navController, navRootController = navRootController)
     }
+
 }
 @Composable
 fun SearchContent(name: String, onClick: () -> Unit) {
     Box(
         modifier = androidx.compose.ui.Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = name,
-            fontSize = MaterialTheme.typography.h3.fontSize,
-            fontWeight = FontWeight.Bold
-        )
         Button(onClick = {onClick() }) {
-
+            Text("back")
         }
     }
+
 }
 @Composable
 fun BottomBar(navController: NavHostController) {
