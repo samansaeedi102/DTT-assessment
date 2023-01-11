@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
-import com.example.housify.navigation.NavGraph
+import com.example.housify.navigation.ScreenNavGraph
 import com.example.housify.ui.theme.HousifyTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             HousifyTheme {
-                NavGraph(navController = rememberNavController())
+                ScreenNavGraph(navController = rememberNavController())
             }
         }
     }

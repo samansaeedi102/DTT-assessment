@@ -19,11 +19,11 @@ import com.example.housify.navigation.HomeNavGraph
 
 
 @Composable
-fun HousifyHomeScreen(navController: NavHostController = rememberNavController(), navRootController: NavController) {
+fun HousifyRootScreen(bottomBarNavController: NavHostController = rememberNavController(), screenNavController: NavController) {
     Scaffold(
-        bottomBar = {  BottomBar(navController = navController) }
+        bottomBar = {  BottomBar(navController = bottomBarNavController) }
     ) {
-        HomeNavGraph(navController = navController, navRootController = navRootController)
+        HomeNavGraph(navController = bottomBarNavController, screenNavController = screenNavController)
     }
 
 }

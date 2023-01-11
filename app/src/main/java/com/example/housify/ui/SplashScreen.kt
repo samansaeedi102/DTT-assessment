@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -12,7 +11,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import com.example.housify.navigation.Screen
+import com.example.housify.navigation.MainScreens
 import com.example.housify.ui.theme.HousifyTheme
 import kotlinx.coroutines.delay
 
@@ -29,7 +28,7 @@ fun SplashScreen(navController: NavController) {
         startAnimation = true
         delay(1500)
         navController.popBackStack()
-        navController.navigate(Screen.Home.route)
+        navController.navigate(MainScreens.Home.route)
     }
     Splash(alpha = alphaAnim.value)
 
