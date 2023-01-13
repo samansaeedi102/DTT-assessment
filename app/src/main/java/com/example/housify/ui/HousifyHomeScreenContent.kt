@@ -17,15 +17,18 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.housify.R
 import com.example.housify.navigation.MainScreens
+import com.example.housify.ui.screens.HousifyUiState
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HousifyHomeScreenContent (onButtonClick: () -> Unit, onSearchClick: () -> Unit){
+fun HousifyHomeScreenContent (housifyUiState: String, onButtonClick: () -> Unit, onSearchClick: () -> Unit){
     var searchValue by remember { mutableStateOf("") }
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(30.dp, 30.dp),
     ) {
         Text(text = "DTT REAL ESTATE", style = MaterialTheme.typography.h1)
+        Text(text = housifyUiState)
         TextField(
             value = searchValue,
             onValueChange = { searchValue = it },
@@ -75,5 +78,15 @@ fun CardComposable(onClick: ()->Unit){
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ErrorScreen(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxSize()
+    ) {
+        Text("Falied to load")
     }
 }

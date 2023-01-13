@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -15,7 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.housify.navigation.BottomBarScreen
 import com.example.housify.navigation.HomeNavGraph
-
+import com.example.housify.ui.screens.HousifyViewModel
 
 
 @Composable
@@ -23,7 +24,10 @@ fun HousifyRootScreen(bottomBarNavController: NavHostController = rememberNavCon
     Scaffold(
         bottomBar = {  BottomBar(navController = bottomBarNavController) }
     ) {
-        HomeNavGraph(navController = bottomBarNavController, screenNavController = screenNavController)
+        val housifyViewModel: HousifyViewModel = viewModel()
+        HomeNavGraph(navController = bottomBarNavController,
+            screenNavController = screenNavController,
+            housifyUiState = housifyViewModel.housifyUiState)
     }
 
 }

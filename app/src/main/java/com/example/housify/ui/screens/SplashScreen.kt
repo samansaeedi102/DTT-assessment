@@ -1,4 +1,4 @@
-package com.example.housify
+package com.example.housify.ui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -11,6 +11,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import com.example.housify.R
 import com.example.housify.navigation.MainScreens
 import com.example.housify.ui.theme.HousifyTheme
 import kotlinx.coroutines.delay

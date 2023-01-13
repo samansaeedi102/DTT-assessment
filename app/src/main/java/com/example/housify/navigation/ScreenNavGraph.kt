@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.housify.SplashScreen
+import com.example.housify.ui.screens.SplashScreen
 import com.example.housify.ui.HousifyDetailsScreen
 import com.example.housify.ui.HousifyRootScreen
 
