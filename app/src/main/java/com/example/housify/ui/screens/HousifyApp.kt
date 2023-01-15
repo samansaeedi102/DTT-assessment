@@ -20,14 +20,17 @@ import com.example.housify.ui.screens.HousifyViewModel
 
 
 @Composable
-fun HousifyRootScreen(bottomBarNavController: NavHostController = rememberNavController(), screenNavController: NavController) {
+fun HousifyApp(
+    viewModel: HousifyViewModel,
+    bottomBarNavController: NavHostController = rememberNavController(),
+    screenNavController: NavController
+) {
     Scaffold(
         bottomBar = {  BottomBar(navController = bottomBarNavController) }
     ) {
-        val housifyViewModel: HousifyViewModel = viewModel()
         HomeNavGraph(navController = bottomBarNavController,
             screenNavController = screenNavController,
-            housifyUiState = housifyViewModel.housifyUiState)
+            housifyUiState = viewModel.housifyUiState)
     }
 
 }

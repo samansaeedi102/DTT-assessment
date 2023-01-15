@@ -11,5 +11,8 @@ import okhttp3.MediaType
 interface HousifyApiService {
     @GET("house")
     suspend fun getHouses(@Header("Access-Key")Access_Key: String): List<HousifyHouse>
+
+//    @GET("house")
+//    suspend fun getSelectedHouse(@Header("Access-Key")Access_Key: String): HousifyHouse
 }
 

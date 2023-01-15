@@ -1,34 +1,40 @@
 package com.example.housify.ui
 
-import androidx.compose.foundation.Image
+
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.housify.R
-import com.example.housify.navigation.MainScreens
-import com.example.housify.ui.screens.HousifyUiState
+import com.example.housify.network.HousifyHouse
 
-@OptIn(ExperimentalMaterialApi::class)
+
 @Composable
-fun HousifyHomeScreenContent (housifyUiState: String, onButtonClick: () -> Unit, onSearchClick: () -> Unit){
+fun HousifyHomeScreenContent (
+    housifyHouses: List<HousifyHouse>,
+    onSearchClick: () -> Unit,
+    onHouseClick: (HousifyHouse) -> Unit
+){
     var searchValue by remember { mutableStateOf("") }
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(30.dp, 30.dp),
+        .padding(start = 30.dp, top = 10.dp, end = 30.dp, bottom = 50.dp),
     ) {
         Text(text = "DTT REAL ESTATE", style = MaterialTheme.typography.h1)
-        Text(text = housifyUiState)
         TextField(
             value = searchValue,
             onValueChange = { searchValue = it },
@@ -37,7 +43,7 @@ fun HousifyHomeScreenContent (housifyUiState: String, onButtonClick: () -> Unit,
                     Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_search), contentDescription = "Close")
                 }
             },
-            placeholder = { Text(text = "Search for a home")},
+            placeholder = { Text(text = "Search for a home", style = MaterialTheme.typography.body1)},
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp)),
@@ -50,31 +56,45 @@ fun HousifyHomeScreenContent (housifyUiState: String, onButtonClick: () -> Unit,
             )
         )
         Spacer(modifier = Modifier.height(10.dp))
-        CardComposable(onClick = {onButtonClick()})
-        CardComposable(onClick = {onButtonClick()})
-        CardComposable(onClick = {onButtonClick()})
-        CardComposable(onClick = {onButtonClick()})
-        CardComposable(onClick = {onButtonClick()})
-        CardComposable(onClick = {onButtonClick()})
+        HousesColumn(houses = housifyHouses,onHouseClick )
+
 
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CardComposable(onClick: ()->Unit){
-    Card(elevation = 4.dp, onClick = {onClick()}, modifier = Modifier.padding(0.dp,5.dp)) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Image(painter = painterResource(R.drawable.dtt_banner), contentDescription = null,Modifier.size(90.dp))
+fun CardComposable(house: HousifyHouse, onHouseClick: (HousifyHouse)->Unit){
+    Card(elevation = 4.dp, onClick = {onHouseClick(house)}, modifier = Modifier.padding(0.dp,9.dp)) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)) {
+            AsyncImage(model = ImageRequest.Builder(context = LocalContext.current)
+                .data(stringResource(id = R.string.image, house.image))
+                .crossfade(true)
+                .build(),
+                contentDescription = "khune",
+                contentScale= ContentScale.Crop,
+                modifier = Modifier
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(10.dp)))
+            Spacer(modifier = Modifier.width(12.dp))
             Column {
-                Text(text = "$45000")
-                Text(text = "1011KH")
-                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = "${house.price}", style = MaterialTheme.typography.h1)
+                Text(text = house.zip, color = MaterialTheme.colors.onSurface)
+                Spacer(modifier = Modifier.height(25.dp))
                 Row() {
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bed")
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bed")
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "bed")
+                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom")
+                    Text(text = "${house.bedrooms}", color = MaterialTheme.colors.onSurface)
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom")
+                    Text(text = "${house.bathrooms}", color = MaterialTheme.colors.onSurface)
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size")
+                    Text(text = "${house.size}", color = MaterialTheme.colors.onSurface)
+                    Spacer(modifier = Modifier.width(16.dp))
                     Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
+                    Text(text = "${house.latitude}", color = MaterialTheme.colors.onSurface)
                 }
             }
         }
@@ -82,11 +102,19 @@ fun CardComposable(onClick: ()->Unit){
 }
 
 @Composable
+fun HousesColumn(houses: List<HousifyHouse>, onClick: (HousifyHouse) -> Unit) {
+    LazyColumn {
+        items(houses, key = {house -> house.id}) { house->
+            CardComposable(house = house, onHouseClick = onClick)
+        }
+    }
+}
+@Composable
 fun ErrorScreen(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.fillMaxSize()
     ) {
-        Text("Falied to load")
+        Text("You are not connected to Internet")
     }
 }
