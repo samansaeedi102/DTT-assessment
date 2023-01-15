@@ -21,42 +21,22 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.housify.R
 import com.example.housify.network.HousifyHouse
+import com.example.housify.ui.screens.HousifyViewModel
 
 @Composable
-fun HousifyDetailsScreen(house: HousifyHouse, onBackClick: ()-> Unit) {
-    Box(modifier = Modifier
-        .background(MaterialTheme.colors.background)) {
+fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: ()-> Unit) {
+    Box() {
+        val house = viewModel.selectedHouse
+        if (house != null) {
+            DetailsImage(house = house ,modifier = Modifier.align(Alignment.TopCenter))
+        }
         Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_back), contentDescription = "back",
-        modifier = Modifier
-            .padding(start = 20.dp, top = 30.dp)
-            .clickable(onClick = { onBackClick() }))
-
-        DetailsImage(house = house ,modifier = Modifier.align(Alignment.TopCenter))
-        Card(modifier = Modifier.padding(top = 200.dp),
-            shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-            backgroundColor = Color.Gray
-        ){
-            Column(Modifier.fillMaxWidth()) {
-                Row(Modifier.fillMaxWidth()) {
-                    Text(text = "434234", style = MaterialTheme.typography.body2)
-                    Row() {
-                        Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom")
-                        Text(text = "3", color = MaterialTheme.colors.onSurface)
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom")
-                        Text(text = "4", color = MaterialTheme.colors.onSurface)
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size")
-                        Text(text = "45", color = MaterialTheme.colors.onSurface)
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
-                        Text(text = "56", color = MaterialTheme.colors.onSurface)
-                    }
-                }
-                Text(text = "Description", style = MaterialTheme.typography.body2)
-                Text(text = stringResource(id =R.string.lorem))
-                Text(text = "Location", style = MaterialTheme.typography.body2)
-            }
+            modifier = Modifier
+                .padding(start = 20.dp, top = 30.dp)
+                .clickable(onClick = { onBackClick() }),
+                tint = Color.White)
+        if (house != null) {
+            DetailsCard(house = house)
         }
     }
 
@@ -66,8 +46,42 @@ fun HousifyDetailsScreen(house: HousifyHouse, onBackClick: ()-> Unit) {
 fun DetailsImage(house: HousifyHouse, modifier: Modifier = Modifier) {
     AsyncImage(
         model = ImageRequest.Builder(context = LocalContext.current)
-            .data(stringResource(id = R.string.image, house.image))
+            .data(stringResource(id = R.string.house_image_api, house.image))
             .crossfade(true)
             .build(),
         contentDescription = "house")
+}
+
+@Composable
+fun DetailsCard(house: HousifyHouse) {
+    Card(modifier = Modifier.padding(start = 5.dp, top = 200.dp, end = 5.dp),
+        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+    ){
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 30.dp, top = 40.dp, end = 30.dp, bottom = 50.dp)) {
+            Row(Modifier.fillMaxWidth()) {
+                Text(text = stringResource(id = R.string.house_price, "%,d".format(house.price)), style = MaterialTheme.typography.h1)
+                Spacer(modifier = Modifier.width(25.dp))
+                Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom")
+                Text(text = "${house.bedrooms}", color = MaterialTheme.colors.onSurface)
+                Spacer(modifier = Modifier.width(16.dp))
+                Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom")
+                Text(text = "${house.bathrooms}", color = MaterialTheme.colors.onSurface)
+                Spacer(modifier = Modifier.width(16.dp))
+                Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size")
+                Text(text = "${house.size}", color = MaterialTheme.colors.onSurface)
+                Spacer(modifier = Modifier.width(16.dp))
+                Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
+                Text(text = "${house.latitude}", color = MaterialTheme.colors.onSurface)
+            }
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(text = "Description", style = MaterialTheme.typography.h1)
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = house.description)
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "Location", style = MaterialTheme.typography.h1)
+        }
+    }
 }

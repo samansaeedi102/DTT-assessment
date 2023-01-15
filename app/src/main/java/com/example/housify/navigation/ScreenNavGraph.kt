@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.housify.network.HousifyHouse
 import com.example.housify.ui.HousifyApp
 import com.example.housify.ui.screens.SplashScreen
 import com.example.housify.ui.HousifyDetailsScreen
@@ -23,9 +24,11 @@ fun ScreenNavGraph(navController: NavHostController) {
             HousifyApp(screenNavController = navController, viewModel = viewModel)
         }
         //Navigate to screen of each homes details
-        //composable(route = MainScreens.Details.route){
-          //  HousifyDetailsScreen(onBackClick = { navController.navigate(BottomBarScreen.Home.route) })
-       // }
+        composable(route = MainScreens.Details.route){
+           HousifyDetailsScreen(onBackClick = {
+               navController.popBackStack()
+               navController.navigate(MainScreens.Home.route)}, viewModel = viewModel)
+       }
     }
 }
 

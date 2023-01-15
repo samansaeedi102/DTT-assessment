@@ -30,7 +30,7 @@ fun HousifyApp(
     ) {
         HomeNavGraph(navController = bottomBarNavController,
             screenNavController = screenNavController,
-            housifyUiState = viewModel.housifyUiState)
+            housifyUiState = viewModel.housifyUiState, viewModel= viewModel)
     }
 
 }

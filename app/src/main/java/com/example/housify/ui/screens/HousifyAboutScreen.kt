@@ -21,7 +21,7 @@ fun HousifyAboutScreen(modifier: Modifier = Modifier
     Column(
         modifier
             .fillMaxSize()
-            .padding(20.dp)
+            .padding(start = 30.dp, top = 40.dp, end = 30.dp, bottom = 50.dp)
 
     ) {
         Text(text = stringResource(R.string.about),

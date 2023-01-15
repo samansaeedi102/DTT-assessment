@@ -1,10 +1,13 @@
 package com.example.housify.ui
 
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,8 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -29,61 +36,53 @@ fun HousifyHomeScreenContent (
     onSearchClick: () -> Unit,
     onHouseClick: (HousifyHouse) -> Unit
 ){
-    var searchValue by remember { mutableStateOf("") }
+    var searchTerm by remember { mutableStateOf("")}
     Column(modifier = Modifier
         .fillMaxSize()
-        .padding(start = 30.dp, top = 10.dp, end = 30.dp, bottom = 50.dp),
+        .padding(start = 30.dp, top = 40.dp, end = 30.dp, bottom = 50.dp),
     ) {
-        Text(text = "DTT REAL ESTATE", style = MaterialTheme.typography.h1)
-        TextField(
-            value = searchValue,
-            onValueChange = { searchValue = it },
-            trailingIcon = {
-                IconButton(onClick = { onSearchClick()}) {
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_search), contentDescription = "Close")
-                }
-            },
-            placeholder = { Text(text = "Search for a home", style = MaterialTheme.typography.body1)},
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp)),
-            colors = TextFieldDefaults.textFieldColors(
-                textColor = Color.Gray,
-                disabledTextColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent
-            )
+        Text(text = stringResource(id = R.string.home_header), style = MaterialTheme.typography.h1)
+        Spacer(modifier = Modifier.height(20.dp))
+        SearchTextField(
+            value = searchTerm,
+            onSearchClick = onSearchClick,
+            onValueChange = {searchTerm = it},
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {onSearchClick()}
+            ),
+            icon = ImageVector.vectorResource(R.drawable.ic_search)
         )
         Spacer(modifier = Modifier.height(10.dp))
         HousesColumn(houses = housifyHouses,onHouseClick )
-
-
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun CardComposable(house: HousifyHouse, onHouseClick: (HousifyHouse)->Unit){
+fun HouseCard(house: HousifyHouse, onHouseClick: (HousifyHouse)->Unit){
     Card(elevation = 4.dp, onClick = {onHouseClick(house)}, modifier = Modifier.padding(0.dp,9.dp)) {
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)) {
             AsyncImage(model = ImageRequest.Builder(context = LocalContext.current)
-                .data(stringResource(id = R.string.image, house.image))
+                .data(stringResource(id = R.string.house_image_api, house.image))
                 .crossfade(true)
                 .build(),
-                contentDescription = "khune",
+                contentDescription = stringResource(id = R.string.house_image_home),
                 contentScale= ContentScale.Crop,
                 modifier = Modifier
                     .size(90.dp)
                     .clip(RoundedCornerShape(10.dp)))
             Spacer(modifier = Modifier.width(12.dp))
             Column {
-                Text(text = "${house.price}", style = MaterialTheme.typography.h1)
+                Text(text = stringResource(id = R.string.house_price, "%,d".format(house.price)) , style = MaterialTheme.typography.h1)
                 Text(text = house.zip, color = MaterialTheme.colors.onSurface)
                 Spacer(modifier = Modifier.height(25.dp))
-                Row() {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom")
                     Text(text = "${house.bedrooms}", color = MaterialTheme.colors.onSurface)
                     Spacer(modifier = Modifier.width(16.dp))
@@ -102,19 +101,57 @@ fun CardComposable(house: HousifyHouse, onHouseClick: (HousifyHouse)->Unit){
 }
 
 @Composable
+fun SearchTextField(value: String,
+                    onSearchClick: () -> Unit,
+                    onValueChange: (String) -> Unit,
+                    keyboardOptions: KeyboardOptions,
+                    keyboardActions: KeyboardActions,
+                    icon: ImageVector
+) {
+    TextField(
+        value = value,
+        onValueChange = onValueChange,
+        trailingIcon = {
+            IconButton(onClick = { onSearchClick()}) {
+                Icon(imageVector = icon, contentDescription = "Close")
+            }
+        },
+        placeholder = { Text(text = "Search for a home", style = MaterialTheme.typography.body1)},
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp)),
+        singleLine = true,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = Color.Gray,
+            disabledTextColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+        )
+    )
+}
+
+@Composable
 fun HousesColumn(houses: List<HousifyHouse>, onClick: (HousifyHouse) -> Unit) {
     LazyColumn {
         items(houses, key = {house -> house.id}) { house->
-            CardComposable(house = house, onHouseClick = onClick)
+            HouseCard(house = house, onHouseClick = onClick)
         }
     }
 }
 @Composable
-fun ErrorScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
+fun ErrorScreen() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
     ) {
+        Image(painter = painterResource(id = R.drawable.disconnected),
+            contentDescription = stringResource(
+            id = R.string.disconnected
+        ))
         Text("You are not connected to Internet")
     }
 }

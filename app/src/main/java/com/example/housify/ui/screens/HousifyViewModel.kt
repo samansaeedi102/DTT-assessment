@@ -20,13 +20,17 @@ sealed interface HousifyUiState {
     data class Success(val houses: List<HousifyHouse>) : HousifyUiState
     object Error: HousifyUiState
     object Loading: HousifyUiState
-    //data class SelectedHouse(val selectedHouse: HousifyHouse) : HousifyUiState
+    //data class SelectedHouse() : HousifyUiState
 }
 
 class HousifyViewModel(private val housifyRepository: HousifyRepository): ViewModel() {
     var housifyUiState: HousifyUiState by mutableStateOf(HousifyUiState.Loading)
         private set
-
+    var selectedHouse by mutableStateOf<HousifyHouse?>(null)
+        private set
+    fun selectedHouseChanged(newHouse: HousifyHouse) {
+        selectedHouse = newHouse
+    }
     init {
         getHouses()
     }
