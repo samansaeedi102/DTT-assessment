@@ -37,7 +37,7 @@ class HousifyViewModel(private val housifyRepository: HousifyRepository): ViewMo
     private fun getHouses() {
         viewModelScope.launch {
             housifyUiState = try {
-                HousifyUiState.Success(housifyRepository.getHousesDetails())
+                HousifyUiState.Success(housifyRepository.getHousesDetails().sortedBy { it.price })
             } catch (e: IOException) {
                 HousifyUiState.Error
             }

@@ -1,7 +1,6 @@
 package com.example.housify.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import android.location.Location
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,16 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.housify.R
+import com.example.housify.map.MapScreen
+import com.example.housify.map.showDistance
 import com.example.housify.network.HousifyHouse
 import com.example.housify.ui.screens.HousifyViewModel
+import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: ()-> Unit) {
@@ -54,6 +54,10 @@ fun DetailsImage(house: HousifyHouse, modifier: Modifier = Modifier) {
 
 @Composable
 fun DetailsCard(house: HousifyHouse) {
+    var houseLocation = Location("Place")
+    houseLocation.latitude= house.latitude.toDouble()
+    houseLocation.longitude = house.longitude.toDouble()
+    var distance = showDistance(houseLocation, LocalContext.current)
     Card(modifier = Modifier.padding(start = 5.dp, top = 200.dp, end = 5.dp),
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
     ){
@@ -74,7 +78,7 @@ fun DetailsCard(house: HousifyHouse) {
                 Text(text = "${house.size}", color = MaterialTheme.colors.onSurface)
                 Spacer(modifier = Modifier.width(16.dp))
                 Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
-                Text(text = "${house.latitude}", color = MaterialTheme.colors.onSurface)
+                Text(text = distance, color = MaterialTheme.colors.onSurface)
             }
             Spacer(modifier = Modifier.height(15.dp))
             Text(text = "Description", style = MaterialTheme.typography.h1)
@@ -82,6 +86,11 @@ fun DetailsCard(house: HousifyHouse) {
             Text(text = house.description)
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = "Location", style = MaterialTheme.typography.h1)
+            Spacer(modifier = Modifier.height(10.dp))
+            val location = LatLng(house.latitude.toDouble(),house.longitude.toDouble())
+            Box(modifier = Modifier.fillMaxWidth().height(250.dp)){
+                MapScreen(location){}
+            }
         }
     }
 }

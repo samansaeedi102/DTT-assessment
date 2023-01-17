@@ -13,9 +13,4 @@ class DefaultHousifyRepository(private val housifyApiService: HousifyApiService)
     override suspend fun getHousesDetails(): List<HousifyHouse> {
         return housifyApiService.getHouses("98bww4ezuzfePCYFxJEWyszbUXc7dxRx")
     }
-
-    /*override suspend fun getSelectedHouse(): HousifyHouse {
-        return housifyApiService.getSelectedHouse("98bww4ezuzfePCYFxJEWyszbUXc7dxRx")
-    }*/
-
 }

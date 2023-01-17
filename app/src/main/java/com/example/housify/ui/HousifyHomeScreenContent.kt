@@ -1,6 +1,7 @@
 package com.example.housify.ui
 
 
+import android.location.Location
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.housify.R
+import com.example.housify.map.showDistance
 import com.example.housify.network.HousifyHouse
+import com.google.android.gms.maps.model.LatLng
 
 
 @Composable
@@ -64,6 +67,10 @@ fun HousifyHomeScreenContent (
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HouseCard(house: HousifyHouse, onHouseClick: (HousifyHouse)->Unit){
+    var houseLocation = Location("Place")
+    houseLocation.latitude= house.latitude.toDouble()
+    houseLocation.longitude = house.longitude.toDouble()
+    var distance = showDistance(houseLocation, LocalContext.current)
     Card(elevation = 4.dp, onClick = {onHouseClick(house)}, modifier = Modifier.padding(0.dp,9.dp)) {
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -93,7 +100,7 @@ fun HouseCard(house: HousifyHouse, onHouseClick: (HousifyHouse)->Unit){
                     Text(text = "${house.size}", color = MaterialTheme.colors.onSurface)
                     Spacer(modifier = Modifier.width(16.dp))
                     Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
-                    Text(text = "${house.latitude}", color = MaterialTheme.colors.onSurface)
+                    Text(text = "$distance", color = MaterialTheme.colors.onSurface)
                 }
             }
         }
