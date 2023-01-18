@@ -18,13 +18,13 @@ fun HouseIconsRow(
 ) {
     Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom")
     Text(text = "$bedrooms", color = MaterialTheme.colors.onSurface)
-    Spacer(modifier = Modifier.width(16.dp))
+    Spacer(modifier = Modifier.width(12.dp))
     Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom")
     Text(text = "$bathrooms", color = MaterialTheme.colors.onSurface)
-    Spacer(modifier = Modifier.width(16.dp))
+    Spacer(modifier = Modifier.width(12.dp))
     Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size")
     Text(text = "$size", color = MaterialTheme.colors.onSurface)
-    Spacer(modifier = Modifier.width(16.dp))
+    Spacer(modifier = Modifier.width(7.dp))
     Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
     Text(text = "$distance", color = MaterialTheme.colors.onSurface)
 }

@@ -26,7 +26,7 @@ fun HomeNavGraph(navController: NavHostController,
     ) {
         composable(route = BottomBarScreen.Home.route) {
             if (isSearchScreen) {
-                HousifySearchScreen{isSearchScreen = false}
+                HousifySearchScreen(onCloseClick = {isSearchScreen = false})
             } else {
                 when(housifyUiState) {
                     is HousifyUiState.Success -> HousifyHomeScreenContent(housifyHouses = housifyUiState.houses,
@@ -34,6 +34,7 @@ fun HomeNavGraph(navController: NavHostController,
                             housifyUiState.houses.forEach {
                                 if (it.city == term || it.zip == term) {
                                     viewModel.selectedHouseChanged(it)
+                                    screenNavController.popBackStack()
                                     screenNavController.navigate(MainScreens.Details.route)
                                 }
                             }
@@ -41,6 +42,7 @@ fun HomeNavGraph(navController: NavHostController,
                         },
                         onHouseClick = {
                             viewModel.selectedHouseChanged(it)
+                            screenNavController.popBackStack()
                             screenNavController.navigate(MainScreens.Details.route)
                         })
                     is HousifyUiState.Error -> ErrorScreen()

@@ -1,6 +1,7 @@
 package com.example.housify.ui
 
 import android.location.Location
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,9 @@ import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: ()-> Unit) {
+    BackHandler() {
+        onBackClick()
+    }
     Box() {
         val house = viewModel.selectedHouse
         if (house != null) {
@@ -34,7 +38,7 @@ fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: ()-> Unit) {
         Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_back), contentDescription = "back",
             modifier = Modifier
                 .padding(start = 20.dp, top = 30.dp)
-                .clickable(onClick = { onBackClick() }),
+                .clickable { onBackClick() },
                 tint = Color.White)
         if (house != null) {
             DetailsCard(house = house)
@@ -44,7 +48,7 @@ fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: ()-> Unit) {
 
 }
 @Composable
-fun DetailsImage(house: HousifyHouse, modifier: Modifier = Modifier) {
+fun DetailsImage(house: HousifyHouse, modifier: Modifier= Modifier) {
     AsyncImage(
         model = ImageRequest.Builder(context = LocalContext.current)
             .data(stringResource(id = R.string.house_image_api, house.image))
@@ -55,10 +59,10 @@ fun DetailsImage(house: HousifyHouse, modifier: Modifier = Modifier) {
 
 @Composable
 fun DetailsCard(house: HousifyHouse) {
-    var houseLocation = Location("Place")
+    val houseLocation = Location("Place")
     houseLocation.latitude= house.latitude.toDouble()
     houseLocation.longitude = house.longitude.toDouble()
-    var distance = showDistance(houseLocation, LocalContext.current)
+    val distance = showDistance(houseLocation, LocalContext.current)
     Card(modifier = Modifier.padding(start = 5.dp, top = 200.dp, end = 5.dp),
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
     ){
@@ -66,7 +70,7 @@ fun DetailsCard(house: HousifyHouse) {
             Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, top = 40.dp, end = 30.dp, bottom = 50.dp)) {
-            Row(Modifier.fillMaxWidth()) {
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(id = R.string.house_price, "%,d".format(house.price)), style = MaterialTheme.typography.h1)
                 Spacer(modifier = Modifier.width(25.dp))
                 HouseIconsRow(house.bedrooms,house.bathrooms,house.size,distance)
@@ -79,7 +83,9 @@ fun DetailsCard(house: HousifyHouse) {
             Text(text = "Location", style = MaterialTheme.typography.h1)
             Spacer(modifier = Modifier.height(10.dp))
             val location = LatLng(house.latitude.toDouble(),house.longitude.toDouble())
-            Box(modifier = Modifier.fillMaxWidth().wrapContentHeight(Alignment.Bottom)){
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(Alignment.Bottom)){
                 MapScreen(location){}
             }
         }

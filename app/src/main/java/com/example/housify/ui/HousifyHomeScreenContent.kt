@@ -2,7 +2,6 @@ package com.example.housify.ui
 
 
 import android.location.Location
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,11 +13,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
@@ -37,7 +34,7 @@ import com.example.housify.utils.SearchTextField
 fun HousifyHomeScreenContent (
     housifyHouses: List<HousifyHouse>,
     onSearchClick: (String) -> Unit,
-    onHouseClick: (HousifyHouse) -> Unit
+    onHouseClick: (HousifyHouse) -> Unit,
 ){
     var searchTerm by remember { mutableStateOf("")}
     Column(modifier = Modifier
@@ -55,9 +52,10 @@ fun HousifyHomeScreenContent (
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
-                onSearch = {onSearchClick}
+                onSearch = {onSearchClick(searchTerm)}
             ),
-            icon = ImageVector.vectorResource(R.drawable.ic_search)
+            icon = ImageVector.vectorResource(R.drawable.ic_search),
+            placeholder = "Search for a home"
         )
         Spacer(modifier = Modifier.height(10.dp))
         HousesColumn(houses = housifyHouses,onHouseClick )
@@ -67,10 +65,10 @@ fun HousifyHomeScreenContent (
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HouseCard(house: HousifyHouse, onHouseClick: (HousifyHouse)->Unit){
-    var houseLocation = Location("Place")
+    val houseLocation = Location("Place")
     houseLocation.latitude= house.latitude.toDouble()
     houseLocation.longitude = house.longitude.toDouble()
-    var distance = showDistance(houseLocation, LocalContext.current)
+    val distance = showDistance(houseLocation, LocalContext.current)
     Card(elevation = 4.dp, onClick = {onHouseClick(house)}, modifier = Modifier.padding(0.dp,9.dp)) {
         Row(modifier = Modifier
             .fillMaxWidth()

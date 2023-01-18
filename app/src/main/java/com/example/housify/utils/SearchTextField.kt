@@ -19,7 +19,8 @@ fun SearchTextField(
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
-    icon: ImageVector
+    icon: ImageVector,
+    placeholder: String
 ) {
     TextField(
         value = value,
@@ -29,7 +30,7 @@ fun SearchTextField(
                 Icon(imageVector = icon, contentDescription = "Close")
             }
         },
-        placeholder = { Text(text = "Search for a home", style = MaterialTheme.typography.body1) },
+        placeholder = { Text(text = placeholder, style = MaterialTheme.typography.body1) },
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp)),

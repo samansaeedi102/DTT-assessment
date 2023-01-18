@@ -1,5 +1,6 @@
 package com.example.housify.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -22,12 +23,14 @@ import com.example.housify.utils.SearchTextField
 @Composable
 fun HousifySearchScreen(onCloseClick: () -> Unit) {
     var searchTerm by remember { mutableStateOf("") }
+    BackHandler() {
+        onCloseClick()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 30.dp, top = 40.dp, end = 30.dp, bottom = 50.dp),
         verticalArrangement = Arrangement.Top,
-
     ) {
         Row(Modifier.wrapContentWidth(Alignment.Start)) {
             Text(text = stringResource(id = R.string.home_header), style = MaterialTheme.typography.h1)
@@ -35,16 +38,17 @@ fun HousifySearchScreen(onCloseClick: () -> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
         SearchTextField(
             value = searchTerm,
-            onSearchClick = { onCloseClick } ,
+            onSearchClick = { onCloseClick() } ,
             onValueChange = {searchTerm = it},
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onSearch = {onCloseClick}
+                onSearch = {}
             ),
-            icon = ImageVector.vectorResource(id = R.drawable.ic_close)
+            icon = ImageVector.vectorResource(id = R.drawable.ic_close),
+            placeholder = "Some search"
         )
         Image(
             painter = painterResource(R.drawable.search_state_empty),
@@ -53,5 +57,9 @@ fun HousifySearchScreen(onCloseClick: () -> Unit) {
                 .size(350.dp)
                 .padding(top = 150.dp),
         )
+        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = stringResource(id = R.string.no_results_found), color = MaterialTheme.colors.onSurface)
+            Text(text = stringResource(id = R.string.another_search), color = MaterialTheme.colors.onSurface)
+        }
     }
 }
