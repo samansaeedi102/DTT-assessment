@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -30,13 +29,14 @@ import coil.request.ImageRequest
 import com.example.housify.R
 import com.example.housify.map.showDistance
 import com.example.housify.network.HousifyHouse
-import com.google.android.gms.maps.model.LatLng
+import com.example.housify.utils.HouseIconsRow
+import com.example.housify.utils.SearchTextField
 
 
 @Composable
 fun HousifyHomeScreenContent (
     housifyHouses: List<HousifyHouse>,
-    onSearchClick: () -> Unit,
+    onSearchClick: (String) -> Unit,
     onHouseClick: (HousifyHouse) -> Unit
 ){
     var searchTerm by remember { mutableStateOf("")}
@@ -55,7 +55,7 @@ fun HousifyHomeScreenContent (
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(
-                onSearch = {onSearchClick()}
+                onSearch = {onSearchClick}
             ),
             icon = ImageVector.vectorResource(R.drawable.ic_search)
         )
@@ -90,55 +90,13 @@ fun HouseCard(house: HousifyHouse, onHouseClick: (HousifyHouse)->Unit){
                 Text(text = house.zip, color = MaterialTheme.colors.onSurface)
                 Spacer(modifier = Modifier.height(25.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom")
-                    Text(text = "${house.bedrooms}", color = MaterialTheme.colors.onSurface)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom")
-                    Text(text = "${house.bathrooms}", color = MaterialTheme.colors.onSurface)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size")
-                    Text(text = "${house.size}", color = MaterialTheme.colors.onSurface)
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
-                    Text(text = "$distance", color = MaterialTheme.colors.onSurface)
+                    HouseIconsRow(house.bedrooms,house.bathrooms,house.size,distance)
                 }
             }
         }
     }
 }
 
-@Composable
-fun SearchTextField(value: String,
-                    onSearchClick: () -> Unit,
-                    onValueChange: (String) -> Unit,
-                    keyboardOptions: KeyboardOptions,
-                    keyboardActions: KeyboardActions,
-                    icon: ImageVector
-) {
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        trailingIcon = {
-            IconButton(onClick = { onSearchClick()}) {
-                Icon(imageVector = icon, contentDescription = "Close")
-            }
-        },
-        placeholder = { Text(text = "Search for a home", style = MaterialTheme.typography.body1)},
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp)),
-        singleLine = true,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color.Gray,
-            disabledTextColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-        )
-    )
-}
 
 @Composable
 fun HousesColumn(houses: List<HousifyHouse>, onClick: (HousifyHouse) -> Unit) {
@@ -146,19 +104,5 @@ fun HousesColumn(houses: List<HousifyHouse>, onClick: (HousifyHouse) -> Unit) {
         items(houses, key = {house -> house.id}) { house->
             HouseCard(house = house, onHouseClick = onClick)
         }
-    }
-}
-@Composable
-fun ErrorScreen() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(painter = painterResource(id = R.drawable.disconnected),
-            contentDescription = stringResource(
-            id = R.string.disconnected
-        ))
-        Text("You are not connected to Internet")
     }
 }

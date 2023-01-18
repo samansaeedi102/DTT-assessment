@@ -20,7 +20,6 @@ sealed interface HousifyUiState {
     data class Success(val houses: List<HousifyHouse>) : HousifyUiState
     object Error: HousifyUiState
     object Loading: HousifyUiState
-    //data class SelectedHouse() : HousifyUiState
 }
 
 class HousifyViewModel(private val housifyRepository: HousifyRepository): ViewModel() {
@@ -43,15 +42,6 @@ class HousifyViewModel(private val housifyRepository: HousifyRepository): ViewMo
             }
         }
     }
-    /*private fun getSelectedHouse(id: Int) {
-        viewModelScope.launch {
-            housifyUiState = try {
-                HousifyUiState.SelectedHouse(housifyRepository.getSelectedHouse())
-            } catch (e: IOException) {
-                HousifyUiState.Error
-            }
-        }
-    }*/
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

@@ -5,15 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -21,6 +16,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.housify.R
+import com.example.housify.utils.SearchTextField
 
 
 @Composable
@@ -39,7 +35,7 @@ fun HousifySearchScreen(onCloseClick: () -> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
         SearchTextField(
             value = searchTerm,
-            onSearchClick = onCloseClick,
+            onSearchClick = { onCloseClick } ,
             onValueChange = {searchTerm = it},
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -53,7 +49,9 @@ fun HousifySearchScreen(onCloseClick: () -> Unit) {
         Image(
             painter = painterResource(R.drawable.search_state_empty),
             contentDescription = "search empty",
-            modifier = Modifier.size(350.dp).padding(top = 150.dp),
+            modifier = Modifier
+                .size(350.dp)
+                .padding(top = 150.dp),
         )
     }
 }

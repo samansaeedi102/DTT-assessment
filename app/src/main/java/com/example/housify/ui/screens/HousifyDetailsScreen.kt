@@ -21,6 +21,7 @@ import com.example.housify.map.MapScreen
 import com.example.housify.map.showDistance
 import com.example.housify.network.HousifyHouse
 import com.example.housify.ui.screens.HousifyViewModel
+import com.example.housify.utils.HouseIconsRow
 import com.google.android.gms.maps.model.LatLng
 
 @Composable
@@ -68,17 +69,7 @@ fun DetailsCard(house: HousifyHouse) {
             Row(Modifier.fillMaxWidth()) {
                 Text(text = stringResource(id = R.string.house_price, "%,d".format(house.price)), style = MaterialTheme.typography.h1)
                 Spacer(modifier = Modifier.width(25.dp))
-                Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom")
-                Text(text = "${house.bedrooms}", color = MaterialTheme.colors.onSurface)
-                Spacer(modifier = Modifier.width(16.dp))
-                Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom")
-                Text(text = "${house.bathrooms}", color = MaterialTheme.colors.onSurface)
-                Spacer(modifier = Modifier.width(16.dp))
-                Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size")
-                Text(text = "${house.size}", color = MaterialTheme.colors.onSurface)
-                Spacer(modifier = Modifier.width(16.dp))
-                Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
-                Text(text = distance, color = MaterialTheme.colors.onSurface)
+                HouseIconsRow(house.bedrooms,house.bathrooms,house.size,distance)
             }
             Spacer(modifier = Modifier.height(15.dp))
             Text(text = "Description", style = MaterialTheme.typography.h1)
@@ -88,7 +79,7 @@ fun DetailsCard(house: HousifyHouse) {
             Text(text = "Location", style = MaterialTheme.typography.h1)
             Spacer(modifier = Modifier.height(10.dp))
             val location = LatLng(house.latitude.toDouble(),house.longitude.toDouble())
-            Box(modifier = Modifier.fillMaxWidth().height(250.dp)){
+            Box(modifier = Modifier.fillMaxWidth().wrapContentHeight(Alignment.Bottom)){
                 MapScreen(location){}
             }
         }

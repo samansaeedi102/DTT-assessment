@@ -4,10 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
-import android.location.LocationRequest
 import android.os.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -15,7 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
@@ -26,19 +22,12 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-import java.util.*
-
 @Composable
 fun MapScreen(location: LatLng, onReady: (GoogleMap) -> Unit) {
-    lateinit var locationRequest: LocationRequest
     val context = LocalContext.current
     val mapView = remember {MapView(context)}
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-    var userLocation: Location
-
-
     lifecycle.addObserver(RememberMapLifeCycle(map = mapView))
-
     AndroidView(factory = {
         mapView.apply {
             mapView.getMapAsync {
@@ -53,11 +42,10 @@ fun MapScreen(location: LatLng, onReady: (GoogleMap) -> Unit) {
     })
 }
 
-
 @Composable
 fun RememberMapLifeCycle(map: MapView) : LifecycleObserver {
     return remember {
-        LifecycleEventObserver { source, event ->
+        LifecycleEventObserver { _, event ->
             when(event) {
                 Lifecycle.Event.ON_CREATE -> map.onCreate(Bundle())
                 Lifecycle.Event.ON_START ->map.onStart()
@@ -73,26 +61,23 @@ fun RememberMapLifeCycle(map: MapView) : LifecycleObserver {
 
 
 
-
+//A variable to save the location needed for function below
 var currentLocation = Location("Place")
+//Calculate the distance of current user to each house
 @Composable
-fun showDistance(houseLocation: Location, context: Context): String {
-    var fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-    var result: Float?
-    var resultFormat: String? = null
+fun showDistance(houseLocation: Location, context: Context): Int {
+    var fusedLocationClient: FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context)
     checkPermission()
     fusedLocationClient.lastLocation
         .addOnSuccessListener {
-            if(it != null) {
-                currentLocation.latitude = it.latitude
-                currentLocation.longitude = it.longitude
+            if (it != null) {
+                currentLocation = it
             }
         }
-    result = currentLocation.distanceTo(houseLocation)
-    resultFormat = "%.0f".format(result / 1000)
-
-    return resultFormat.toString()
+    return (currentLocation.distanceTo(houseLocation) / 1000).toInt()
 }
+//Check location permission needed for calculating the distance
 @Composable
 fun checkPermission() {
     if (ActivityCompat.checkSelfPermission(
