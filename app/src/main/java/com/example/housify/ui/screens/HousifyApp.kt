@@ -10,7 +10,7 @@ import com.example.housify.navigation.HomeNavGraph
 import com.example.housify.ui.screens.HousifyViewModel
 import com.example.housify.utils.BottomBar
 
-
+//Implementing two navControllers for Screens and BottomNavigation
 @Composable
 fun HousifyApp(
     viewModel: HousifyViewModel,

@@ -12,7 +12,8 @@ import com.example.housify.ui.screens.HousifyUiState
 import com.example.housify.ui.screens.HousifyViewModel
 import com.example.housify.ui.theme.HousifyAboutScreen
 
-//The graph where it is checked if internet is connected and data is fetched from API
+//The graph where it is checked if internet is connected and data is fetched from API. If internet is connected
+//data will be loaded to the screen
 @Composable
 fun HomeNavGraph(navController: NavHostController,
                  screenNavController: NavController,

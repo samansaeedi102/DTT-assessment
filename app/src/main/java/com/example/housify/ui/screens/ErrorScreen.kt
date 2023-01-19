@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.housify.R
 
+//Show this error screen if there was no internet
 @Composable
 fun ErrorScreen() {
     Column(
