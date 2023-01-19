@@ -5,11 +5,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.housify.network.HousifyHouse
 import com.example.housify.ui.HousifyApp
-import com.example.housify.ui.screens.SplashScreen
 import com.example.housify.ui.HousifyDetailsScreen
 import com.example.housify.ui.screens.HousifyViewModel
+import com.example.housify.ui.screens.SplashScreen
 
 @Composable
 fun ScreenNavGraph(navController: NavHostController) {
