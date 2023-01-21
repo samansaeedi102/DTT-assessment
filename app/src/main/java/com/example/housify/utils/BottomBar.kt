@@ -26,7 +26,7 @@ fun BottomBar(navController: NavHostController) {
 
     val bottomBarDestination = screens.any {it.route == currentDestination?.route}
     if (bottomBarDestination) {
-        BottomNavigation() {
+        BottomNavigation {
             screens.forEach { screen ->
                 AddItem(
                     screen = screen,

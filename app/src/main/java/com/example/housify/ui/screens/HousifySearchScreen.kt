@@ -23,7 +23,7 @@ import com.example.housify.utils.SearchTextField
 @Composable
 fun HousifySearchScreen(onCloseClick: () -> Unit) {
     var searchTerm by remember { mutableStateOf("") }
-    BackHandler() {
+    BackHandler {
         onCloseClick()
     }
     Column(

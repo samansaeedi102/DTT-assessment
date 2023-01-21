@@ -30,10 +30,10 @@ import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: ()-> Unit) {
-    BackHandler() {
+    BackHandler {
         onBackClick()
     }
-    Box() {
+    Box {
         val house = viewModel.selectedHouse
         if (house != null) {
             DetailsImage(house = house ,modifier = Modifier.align(Alignment.TopCenter))

@@ -4,16 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.housify.HousifyApplication
 import com.example.housify.data.HousifyRepository
 import com.example.housify.network.HousifyHouse
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
+import javax.inject.Inject
 
 
 sealed interface HousifyUiState {
@@ -22,7 +19,8 @@ sealed interface HousifyUiState {
     object Loading: HousifyUiState
 }
 
-class HousifyViewModel(private val housifyRepository: HousifyRepository): ViewModel() {
+@HiltViewModel
+class HousifyViewModel @Inject constructor(private val housifyRepository: HousifyRepository): ViewModel() {
     var housifyUiState: HousifyUiState by mutableStateOf(HousifyUiState.Loading)
         private set
     var selectedHouse by mutableStateOf<HousifyHouse?>(null)
@@ -39,15 +37,6 @@ class HousifyViewModel(private val housifyRepository: HousifyRepository): ViewMo
                 HousifyUiState.Success(housifyRepository.getHousesDetails().sortedBy { it.price })
             } catch (e: IOException) {
                 HousifyUiState.Error
-            }
-        }
-    }
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as HousifyApplication)
-                val housifyRepository = application.container.housifyRepository
-                HousifyViewModel(housifyRepository = housifyRepository)
             }
         }
     }

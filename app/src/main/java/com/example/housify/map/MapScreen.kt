@@ -66,7 +66,7 @@ var currentLocation = Location("Place")
 //Calculate the distance of current user to each house
 @Composable
 fun showDistance(houseLocation: Location, context: Context): Int {
-    var fusedLocationClient: FusedLocationProviderClient =
+    val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
     checkPermission()
     fusedLocationClient.lastLocation
@@ -90,7 +90,7 @@ fun checkPermission() {
     ) {
         ActivityCompat.requestPermissions(
             LocalContext.current as Activity,
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 100)
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 100)
         return
     }
 }

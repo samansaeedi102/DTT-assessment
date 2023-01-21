@@ -49,7 +49,7 @@ fun Splash(alpha: Float) {
 @Preview
 @Composable
 fun SplashScreenPreview() {
-    HousifyTheme() {
+    HousifyTheme {
         Splash(alpha = 1f)
     }
 
