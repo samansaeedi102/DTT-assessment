@@ -28,7 +28,7 @@ fun BottomBar(navController: NavHostController) {
     if (bottomBarDestination) {
         BottomNavigation {
             screens.forEach { screen ->
-                AddItem(
+                addItem(
                     screen = screen,
                     currentDestination = currentDestination,
                     navController = navController
@@ -39,7 +39,7 @@ fun BottomBar(navController: NavHostController) {
 }
 
 @Composable
-fun RowScope.AddItem(screen: BottomBarScreen,
+fun RowScope.addItem(screen: BottomBarScreen,
                      currentDestination: NavDestination?,
                      navController: NavController
 ) {

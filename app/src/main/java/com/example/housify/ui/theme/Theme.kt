@@ -13,10 +13,11 @@ private val DarkColorPalette = darkColors(
 private val LightColorPalette = lightColors(
     primary = White,
     onPrimary = Medium,
-    background = DarkGray,
+    background = LightGray,
     surface = White,
     onSurface = Medium,
-    secondary = Medium
+    secondary = Medium,
+    primaryVariant = DarkGray
 )
 
 @Composable
@@ -29,7 +30,7 @@ fun HousifyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = typography,
         shapes = Shapes,
         content = content
     )

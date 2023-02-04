@@ -16,18 +16,18 @@ import com.example.housify.R
 import com.example.housify.utils.HyperlinkText
 
 @Composable
-fun HousifyAboutScreen(modifier: Modifier = Modifier
-    .background(MaterialTheme.colors.background)) {
+fun HousifyAboutScreen(modifier: Modifier = Modifier) {
     Column(
         modifier
             .fillMaxSize()
             .padding(start = 30.dp, top = 40.dp, end = 30.dp, bottom = 50.dp)
+            .background(MaterialTheme.colors.background)
     ) {
         Text(text = stringResource(R.string.about),
         style = MaterialTheme.typography.h1)
         Spacer(modifier = Modifier.height(20.dp))
-        Text(text = stringResource(R.string.lorem),
-        style = MaterialTheme.typography.body2)
+        Text(text = stringResource(R.string.lorem,),
+        style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onSurface)
         Spacer(modifier = Modifier.height(20.dp))
         Text(text = stringResource(R.string.design),
         style = MaterialTheme.typography.h1)

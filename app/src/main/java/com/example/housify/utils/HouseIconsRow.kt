@@ -1,6 +1,7 @@
 package com.example.housify.utils
 
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -16,15 +17,15 @@ import com.example.housify.R
 fun HouseIconsRow(
     bedrooms: Int, bathrooms: Int, size: Int, distance: Int
 ) {
-    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom")
-    Text(text = "$bedrooms", color = MaterialTheme.colors.onSurface)
+    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom", modifier = Modifier.size(18.dp))
+    Text(text = " $bedrooms", color = MaterialTheme.colors.onSurface)
     Spacer(modifier = Modifier.width(12.dp))
-    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom")
-    Text(text = "$bathrooms", color = MaterialTheme.colors.onSurface)
+    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom", modifier = Modifier.size(18.dp))
+    Text(text = " $bathrooms", color = MaterialTheme.colors.onSurface)
     Spacer(modifier = Modifier.width(12.dp))
-    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size")
-    Text(text = "$size", color = MaterialTheme.colors.onSurface)
+    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size", modifier = Modifier.size(18.dp))
+    Text(text = " $size", color = MaterialTheme.colors.onSurface)
     Spacer(modifier = Modifier.width(7.dp))
-    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed")
-    Text(text = "$distance", color = MaterialTheme.colors.onSurface)
+    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed", modifier = Modifier.size(18.dp))
+    Text(text = " $distance km", color = MaterialTheme.colors.onSurface)
 }

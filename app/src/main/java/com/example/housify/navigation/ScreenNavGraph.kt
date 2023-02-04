@@ -7,18 +7,13 @@ import androidx.navigation.compose.composable
 import com.example.housify.ui.HousifyHome
 import com.example.housify.ui.HousifyDetailsScreen
 import com.example.housify.ui.screens.HousifyViewModel
-import com.example.housify.ui.screens.SplashScreen
 
 @Composable
 fun ScreenNavGraph(navController: NavHostController, viewModel: HousifyViewModel) {
-    NavHost(navController = navController, startDestination = MainScreens.Splash.route) {
-        //Default navigation to splash screen
-        composable(route = MainScreens.Splash.route) {
-            SplashScreen(navController)
-        }
+    NavHost(navController = navController, startDestination = MainScreens.Home.route) {
         //Navigate to a HomeScreen loader
         composable(route = MainScreens.Home.route){
-            HousifyHome(screenNavController = navController, viewModel = viewModel)
+            HousifyHome(screenNavController = navController, viewModel = viewModel, housifyUiState = viewModel.housifyUiState)
         }
         //Navigate to screen of each homes details
         composable(route = MainScreens.Details.route){

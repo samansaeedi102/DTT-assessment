@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Always include this permission -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    xmlns:tools="http://schemas.android.com/tools" >
 
-    <!-- Include only if your app benefits from precise location access. -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Always include this permission -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include only if your app benefits from precise location access. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".HousifyApplication"
         android:allowBackup="true"
@@ -16,14 +15,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Housify"
-        tools:targetApi="31">
+        android:theme="@style/Theme.Housify.NoActionBar"
+        tools:targetApi="31" >
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.screens.SplashActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Housify">
+            android:theme="@style/SplashScreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,17 +32,17 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".ui.MainActivity"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
     </application>
-
 
 </manifest>

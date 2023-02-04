@@ -5,7 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +22,7 @@ import com.example.housify.utils.SearchTextField
 
 
 @Composable
-fun HousifySearchScreen(onCloseClick: () -> Unit) {
+fun HousifySearchScreen(onCloseClick: () -> Unit, searchedTerm: String) {
     var searchTerm by remember { mutableStateOf("") }
     BackHandler {
         onCloseClick()
@@ -38,7 +39,7 @@ fun HousifySearchScreen(onCloseClick: () -> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
         SearchTextField(
             value = searchTerm,
-            onSearchClick = { onCloseClick() } ,
+            onSearch = { onCloseClick() } ,
             onValueChange = {searchTerm = it},
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -48,7 +49,7 @@ fun HousifySearchScreen(onCloseClick: () -> Unit) {
                 onSearch = {}
             ),
             icon = ImageVector.vectorResource(id = R.drawable.ic_close),
-            placeholder = "Some search"
+            placeholder = searchedTerm
         )
         Image(
             painter = painterResource(R.drawable.search_state_empty),
@@ -57,6 +58,7 @@ fun HousifySearchScreen(onCloseClick: () -> Unit) {
                 .size(350.dp)
                 .padding(top = 150.dp),
         )
+        Spacer(modifier = Modifier.height(45.dp))
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = stringResource(id = R.string.no_results_found), color = MaterialTheme.colors.onSurface)
             Text(text = stringResource(id = R.string.another_search), color = MaterialTheme.colors.onSurface)

@@ -5,8 +5,18 @@
         <item name="android:statusBarColor">@color/light_status</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
-    <style name="SplashScreenTheme" parent="android:Theme.Material.Light.NoActionBar">
+
+    <style name="Theme.SplashScreenApp" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/splash_color</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/splash_color</item>
+    </style>
+
+    <style name="SplashScreenTheme" parent="Theme.SplashScreenApp">
+        <item name="android:windowBackground">@drawable/dtt_splash</item>
+    </style>
+    <style name="Theme.Housify.NoActionBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
 </resources>
