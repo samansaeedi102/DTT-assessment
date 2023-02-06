@@ -6,32 +6,32 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
-private val DarkColorPalette = darkColors(
+private val darkColorPalette = darkColors(
 
 )
 
-private val LightColorPalette = lightColors(
-    primary = White,
-    onPrimary = Medium,
-    background = LightGray,
-    surface = White,
-    onSurface = Medium,
-    secondary = Medium,
-    primaryVariant = DarkGray
+private val lightColorPalette = lightColors(
+    primary = white,
+    onPrimary = medium,
+    background = lightGray,
+    surface = white,
+    onSurface = medium,
+    secondary = medium,
+    primaryVariant = darkGray
 )
 
 @Composable
 fun HousifyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        darkColorPalette
     } else {
-        LightColorPalette
+        lightColorPalette
     }
 
     MaterialTheme(
         colors = colors,
         typography = typography,
-        shapes = Shapes,
+        shapes = shapes,
         content = content
     )
 }

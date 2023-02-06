@@ -14,6 +14,7 @@
     <style name="SplashScreenTheme" parent="Theme.SplashScreenApp">
         <item name="android:windowBackground">@drawable/dtt_splash</item>
     </style>
+
     <style name="Theme.Housify.NoActionBar">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>

@@ -6,7 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -16,10 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.housify.ui.theme.lightFont
 
+/**
+ * Prepares textField needed in other screens.
+ */
 @Composable
 fun SearchTextField(
     value: String,
-    onSearch: (String) -> Unit = {},
+    onCloseClick: () -> Unit,
     onValueChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
@@ -28,10 +31,10 @@ fun SearchTextField(
 ) {
     TextField(
         value = value,
-        onValueChange =  onValueChange,
+        onValueChange = onValueChange,
         textStyle = TextStyle.Default.copy(fontSize = 12.sp, fontFamily = lightFont),
         trailingIcon = {
-            IconButton(onClick = { onSearch(value)}) {
+            IconButton(onClick = onCloseClick) {
                 Icon(imageVector = icon, contentDescription = "Close")
             }
         },

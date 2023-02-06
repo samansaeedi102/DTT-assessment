@@ -13,15 +13,17 @@ import kotlinx.coroutines.delay
 @SuppressLint
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val splashScreen = installSplashScreen()
             splashScreen.setKeepOnScreenCondition { true }
         }
         super.onCreate(savedInstanceState)
         lifecycleScope.launchWhenCreated {
             delay(1000)
-            val intent = Intent(this@SplashActivity,
-            MainActivity::class.java)
+            val intent = Intent(
+                this@SplashActivity,
+                MainActivity::class.java
+            )
             startActivity(intent)
             finish()
         }

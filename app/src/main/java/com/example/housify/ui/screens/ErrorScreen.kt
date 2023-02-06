@@ -12,19 +12,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.housify.R
 
-//Show this error screen if there was no internet
-@Composable
+/**
+ * Shows error if user has no access to internet.
+ */@Composable
 fun ErrorScreen() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        Image(painter = painterResource(id = R.drawable.disconnected),
+        Image(
+            painter = painterResource(id = R.drawable.disconnected),
             contentDescription = stringResource(
                 id = R.string.disconnected
             )
         )
-        Text("You are not connected to Internet")
+        Text(stringResource(R.string.not_connected))
     }
 }

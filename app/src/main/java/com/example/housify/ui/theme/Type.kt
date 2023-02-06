@@ -20,6 +20,7 @@ val bookFont = FontFamily(
 val lightFont = FontFamily(
     Font(R.font.gothamssm_light, FontWeight.Normal)
 )
+
 // Set of Material typography styles to start with
 val typography = Typography(
     //Style for Title 01

@@ -11,6 +11,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
 
+/**
+ * Make linked text to be shown in AboutScreen
+ */
 @Composable
 fun HyperlinkText(
     modifier: Modifier = Modifier,

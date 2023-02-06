@@ -9,23 +9,59 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.housify.R
 
+/**
+ * Prepare icons and texts of house details and can be implemented in other screens.
+ */
 @Composable
 fun HouseIconsRow(
     bedrooms: Int, bathrooms: Int, size: Int, distance: Int
 ) {
-    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bed), contentDescription = "bedroom", modifier = Modifier.size(18.dp))
-    Text(text = " $bedrooms", color = MaterialTheme.colors.onSurface)
-    Spacer(modifier = Modifier.width(12.dp))
-    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_bath), contentDescription = "bathroom", modifier = Modifier.size(18.dp))
-    Text(text = " $bathrooms", color = MaterialTheme.colors.onSurface)
-    Spacer(modifier = Modifier.width(12.dp))
-    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_layers), contentDescription = "size", modifier = Modifier.size(18.dp))
-    Text(text = " $size", color = MaterialTheme.colors.onSurface)
-    Spacer(modifier = Modifier.width(7.dp))
-    Icon(imageVector = ImageVector.vectorResource(R.drawable.ic_location), contentDescription = "bed", modifier = Modifier.size(18.dp))
-    Text(text = " $distance km", color = MaterialTheme.colors.onSurface)
+    Icon(
+        imageVector = ImageVector.vectorResource(R.drawable.ic_bed),
+        contentDescription = stringResource(R.string.bedrooms),
+        modifier = Modifier.size(15.dp)
+    )
+    Text(
+        text = " $bedrooms",
+        color = MaterialTheme.colors.onSurface,
+        style = MaterialTheme.typography.subtitle2
+    )
+    Spacer(modifier = Modifier.width(18.dp))
+    Icon(
+        imageVector = ImageVector.vectorResource(R.drawable.ic_bath),
+        contentDescription = stringResource(R.string.bathrooms),
+        modifier = Modifier.size(15.dp)
+    )
+    Text(
+        text = " $bathrooms",
+        color = MaterialTheme.colors.onSurface,
+        style = MaterialTheme.typography.subtitle2
+    )
+    Spacer(modifier = Modifier.width(18.dp))
+    Icon(
+        imageVector = ImageVector.vectorResource(R.drawable.ic_layers),
+        contentDescription = stringResource(R.string.size_of_the_house),
+        modifier = Modifier.size(15.dp)
+    )
+    Text(
+        text = " $size",
+        color = MaterialTheme.colors.onSurface,
+        style = MaterialTheme.typography.subtitle2
+    )
+    Spacer(modifier = Modifier.width(18.dp))
+    Icon(
+        imageVector = ImageVector.vectorResource(R.drawable.ic_location),
+        contentDescription = stringResource(R.string.distance_of_the_house),
+        modifier = Modifier.size(15.dp)
+    )
+    Text(
+        text = " $distance km",
+        color = MaterialTheme.colors.onSurface,
+        style = MaterialTheme.typography.subtitle2
+    )
 }

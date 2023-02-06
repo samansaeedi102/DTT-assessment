@@ -15,7 +15,9 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import javax.inject.Singleton
-
+/**
+ * Provides Dagger-Hilt tree.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -29,7 +31,7 @@ object AppModule {
             .baseUrl(Constant.BASE_URL)
             .build()
 
-        val retrofitService: HousifyApiService by lazy{
+        val retrofitService: HousifyApiService by lazy {
             retrofit.create(HousifyApiService::class.java)
         }
         return retrofitService
@@ -37,7 +39,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideHousifyRepository(housifyApiService: HousifyApiService, app: Application): HousifyRepository {
-        return DefaultHousifyRepository(housifyApiService,app)
+    fun provideHousifyRepository(
+        housifyApiService: HousifyApiService,
+        app: Application
+    ): HousifyRepository {
+        return DefaultHousifyRepository(housifyApiService, app)
     }
 }
