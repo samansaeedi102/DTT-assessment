@@ -57,7 +57,7 @@ val typography = Typography(
     subtitle1 = TextStyle(
         fontFamily = bookFont,
         fontWeight = FontWeight.Normal,
-        fontSize = 10.sp
+        fontSize = 12.sp
     ),
     //Style for Detail
     subtitle2 = TextStyle(

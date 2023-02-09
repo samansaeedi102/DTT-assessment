@@ -1,5 +1,8 @@
 package com.example.housify.ui.screens
 
+import android.content.ContentValues.TAG
+import android.location.Location
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,16 +11,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.housify.data.HousifyRepository
 import com.example.housify.data.network.HousifyHouse
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -35,7 +37,8 @@ class HousifyViewModel @Inject constructor(private val housifyRepository: Housif
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
     private val _housesList = mutableStateListOf<HousifyHouse>()
     var housesList: List<HousifyHouse> = _housesList
 
@@ -86,18 +89,32 @@ class HousifyViewModel @Inject constructor(private val housifyRepository: Housif
      * Because in design zip code has no space between digits and letters, but the zip code loaded from
      * the API has a space by default.
      */
+
+    init {
+        viewModelScope.launch {
+            delay(10)
+            _isLoading.value = false
+        }
+    }
+
     fun getHouses() {
+        val results = FloatArray(1)
         viewModelScope.launch {
             try {
                 _housesList.addAll(housifyRepository.getHousesDetails())
                 if (locationPermissionGranted.value == true) {
                     _housesList.forEach {
-                        val houseLatLng = LatLng(it.latitude.toDouble(), it.longitude.toDouble())
-                        it.distance = (SphericalUtil.computeDistanceBetween(
-                            userLatLng,
-                            houseLatLng
-                        ) / 1000).toInt()
+                        Location.distanceBetween(
+                            it.latitude.toDouble(),
+                            it.longitude.toDouble(),
+                            userCurrentLat.value,
+                            userCurrentLng.value,
+                            results
+                        )
+                        it.distance = (results[0].toInt()) / 1000
                         it.zip = it.zip.replace("\\s".toRegex(), "")
+                        it.fullAddress = it.zip.plus(" ").plus(it.city)
+                        Log.d(TAG, "${it.fullAddress} injas")
                     }
                 }
                 _uiState.update {
@@ -117,11 +134,9 @@ class HousifyViewModel @Inject constructor(private val housifyRepository: Housif
     fun searchHouse(term: String) {
         viewModelScope.launch(Dispatchers.Default) {
             housesList = _housesList.filter { it ->
-                it.city.contains(term.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(
-                        Locale.getDefault()
-                    ) else it.toString()
-                }) || it.zip.contains(term.uppercase())
+                        it.city.contains(term, ignoreCase = true) ||
+                        it.zip.contains(term,ignoreCase = true) ||
+                        it.fullAddress.contains(term, ignoreCase = true)
             }
             updateSearchState()
             updateSearchedTerm(term)

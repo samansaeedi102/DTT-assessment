@@ -9,6 +9,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
@@ -27,7 +29,8 @@ fun SearchTextField(
     keyboardOptions: KeyboardOptions,
     keyboardActions: KeyboardActions,
     icon: ImageVector,
-    placeholder: String
+    placeholder: String?,
+    focusRequester: FocusRequester = FocusRequester()
 ) {
     TextField(
         value = value,
@@ -38,11 +41,16 @@ fun SearchTextField(
                 Icon(imageVector = icon, contentDescription = "Close")
             }
         },
-        placeholder = { Text(text = placeholder, style = MaterialTheme.typography.subtitle1) },
+        placeholder = {
+            if (placeholder != null) {
+                Text(text = placeholder, style = MaterialTheme.typography.subtitle1)
+            }
+        },
         modifier = Modifier
             .fillMaxWidth()
             .height(49.dp)
-            .clip(RoundedCornerShape(10.dp)),
+            .clip(RoundedCornerShape(10.dp))
+            .focusRequester(focusRequester),
         singleLine = true,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

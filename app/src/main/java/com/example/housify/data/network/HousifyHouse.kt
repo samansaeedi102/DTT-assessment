@@ -19,5 +19,7 @@ data class HousifyHouse(
     val longitude: Int,
     val createdDate: String,
     //used for calculating distance between each house and current user
-    var distance: Int = 0
+    var distance: Int = 0,
+    //used for enhancing search operations
+    var fullAddress: String = ""
 )

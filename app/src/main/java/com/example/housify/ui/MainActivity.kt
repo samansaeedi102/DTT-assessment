@@ -11,6 +11,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.housify.R
@@ -27,7 +28,11 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<HousifyViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getLocationPermission()
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                viewModel.isLoading.value
+            }
+        }
         setContent {
             HousifyTheme {
                 val viewModel = hiltViewModel<HousifyViewModel>()
@@ -41,6 +46,8 @@ class MainActivity : ComponentActivity() {
      */
     override fun onResume() {
         super.onResume()
+        getLocationPermission()
+        getDeviceLocation()
         viewModel.deleteCurrentHousesOnResume()
         viewModel.getHouses()
     }
@@ -64,7 +71,6 @@ class MainActivity : ComponentActivity() {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             viewModel.grantLocationPermission(true)
-            getDeviceLocation()
         } else {
             requestLocationPermission()
         }
@@ -125,20 +131,10 @@ class MainActivity : ComponentActivity() {
                 val locationResult = fusedLocationProviderClient.lastLocation
 
                 locationResult.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val lastKnownLocation = task.result
-
-                        if (lastKnownLocation != null) {
-                            viewModel.currentUserLatLng(
-                                LatLng(
-                                    lastKnownLocation.altitude,
-                                    lastKnownLocation.longitude
-                                )
-                            )
-                        }
-                    } else {
-                        Log.d("Exception", " Current User location is null")
-                    }
+                    val result = locationResult.result
+                    viewModel.currentUserLatLng(
+                        LatLng(result.latitude, result.longitude)
+                    )
                 }
 
             }

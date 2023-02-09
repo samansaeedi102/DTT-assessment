@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -40,18 +41,19 @@ fun HousifyHomeScreenContent(
     viewModel: HousifyViewModel = hiltViewModel(),
     screenNavController: NavController
 ) {
+    val searchTextFieldFocusRequester = remember { FocusRequester() }
     val uiState by viewModel.uiState.collectAsState()
+    if(uiState.searchUnsuccessful) {
+        LaunchedEffect(Unit) {
+            searchTextFieldFocusRequester.requestFocus()
+        }
+    }
 
     //Appears if user's search result does not match any of the houses.
-    if (uiState.searchUnsuccessful) {
-        HousifySearchScreen(
-            onCloseClick = {
-                viewModel.closeEmptySearchScreen()
-                viewModel.deleteSearchedTerm()
-            },
-            searchedTerm = uiState.currentSearchedTerm
-        )
-    } else {
+//    if (uiState.searchUnsuccessful) {
+//
+//    } else {
+
         //Appears if the user's search matches at least one of the houses
         Column(
             modifier = Modifier
@@ -65,7 +67,10 @@ fun HousifyHomeScreenContent(
             Spacer(modifier = Modifier.height(20.dp))
             SearchTextField(
                 value = uiState.currentSearchedTerm,
-                onCloseClick = { },
+                onCloseClick = {
+                    viewModel.closeEmptySearchScreen()
+                    viewModel.deleteSearchedTerm()
+                },
                 onValueChange = {
                     viewModel.updateSearchedTerm(it)
                     viewModel.searchHouse(it)
@@ -77,7 +82,12 @@ fun HousifyHomeScreenContent(
                 keyboardActions = KeyboardActions(
                     onSearch = {}
                 ),
-                icon = ImageVector.vectorResource(R.drawable.ic_search),
+                icon = if(uiState.searchUnsuccessful) {
+                    ImageVector.vectorResource(R.drawable.ic_close)
+                } else {
+                    ImageVector.vectorResource(R.drawable.ic_search)
+                },
+                focusRequester = searchTextFieldFocusRequester,
                 placeholder = "Search for a home"
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -87,6 +97,9 @@ fun HousifyHomeScreenContent(
                 ErrorScreen()
             }
             //Loads houses list if the user has access to internet.
+            if(uiState.searchUnsuccessful) {
+                HousifySearchScreen()
+            }
             HousesColumn(
                 houses = viewModel.housesList,
                 onHouseClick = {
@@ -98,7 +111,7 @@ fun HousifyHomeScreenContent(
                 }
             )
         }
-    }
+
 }
 
 /**
