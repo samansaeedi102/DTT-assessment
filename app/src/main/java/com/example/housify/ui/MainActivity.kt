@@ -5,7 +5,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -140,7 +140,7 @@ class MainActivity : ComponentActivity() {
             }
 
         } catch (e: SecurityException) {
-            Log.d("Exception", "Exception:  $e.message.toString()")
+            Toast.makeText(this, getString(R.string.location_unavailable), Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.housify.data.network
 
+import com.example.housify.data.network.Constant.ACCESS_KEY
 import retrofit2.http.GET
 import retrofit2.http.Header
 /**
@@ -7,6 +8,6 @@ import retrofit2.http.Header
  */
 interface HousifyApiService {
     @GET("house")
-    suspend fun getHouses(@Header("Access-Key") Access_Key: String): List<HousifyHouse>
+    suspend fun getHouses(@Header(ACCESS_KEY) Access_Key: String): List<HousifyHouse>
 }
 

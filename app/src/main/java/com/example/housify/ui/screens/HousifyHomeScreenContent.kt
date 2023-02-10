@@ -48,13 +48,6 @@ fun HousifyHomeScreenContent(
             searchTextFieldFocusRequester.requestFocus()
         }
     }
-
-    //Appears if user's search result does not match any of the houses.
-//    if (uiState.searchUnsuccessful) {
-//
-//    } else {
-
-        //Appears if the user's search matches at least one of the houses
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -88,7 +81,7 @@ fun HousifyHomeScreenContent(
                     ImageVector.vectorResource(R.drawable.ic_search)
                 },
                 focusRequester = searchTextFieldFocusRequester,
-                placeholder = "Search for a home"
+                placeholder = stringResource(R.string.search_for_a_house)
             )
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -96,10 +89,11 @@ fun HousifyHomeScreenContent(
             if (uiState.noInternet) {
                 ErrorScreen()
             }
-            //Loads houses list if the user has access to internet.
+            //Appears if user's search result does not match any of the houses.
             if(uiState.searchUnsuccessful) {
                 HousifySearchScreen()
             }
+            //Loads houses list if the user has access to internet.
             HousesColumn(
                 houses = viewModel.housesList,
                 onHouseClick = {

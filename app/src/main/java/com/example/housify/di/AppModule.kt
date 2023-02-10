@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.housify.data.DefaultHousifyRepository
 import com.example.housify.data.HousifyRepository
 import com.example.housify.data.network.Constant
+import com.example.housify.data.network.Constant.CONVERTER_FACTORY
 import com.example.housify.data.network.HousifyApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -25,9 +26,12 @@ object AppModule {
     @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
+            /**
+             * @return retrofitService.
+             */
     fun provideHousifyApi(): HousifyApiService {
         val retrofit = Retrofit.Builder()
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(Json.asConverterFactory(CONVERTER_FACTORY.toMediaType()))
             .baseUrl(Constant.BASE_URL)
             .build()
 
@@ -40,6 +44,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideHousifyRepository(
+        /**
+         * @return repository.
+         */
         housifyApiService: HousifyApiService,
         app: Application
     ): HousifyRepository {

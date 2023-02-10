@@ -1,14 +1,11 @@
 package com.example.housify.ui
 
-import android.location.Location
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -40,7 +37,6 @@ fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: () -> Unit) {
         onBackClick()
     }
     val house = viewModel.selectedHouse
-    val scroll: ScrollState = rememberScrollState(0)
     if (house != null) {
         CollapsingToolBar(house = house, onBackClick = onBackClick)
     }
@@ -52,9 +48,6 @@ fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: () -> Unit) {
  */
 @Composable
 fun DetailsCard(house: HousifyHouse) {
-    val houseLocation = Location("Place")
-    houseLocation.latitude = house.latitude.toDouble()
-    houseLocation.longitude = house.longitude.toDouble()
     Card(
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         modifier = Modifier

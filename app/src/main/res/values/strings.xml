@@ -26,4 +26,6 @@
     <string name="size_of_the_house">size</string>
     <string name="distance_of_the_house">your distance from the house</string>
     <string name="URI"><![CDATA[google.navigation:q=%1s,%2s&mode=l]]></string>
+    <string name="search_for_a_house">Search for a home</string>
+    <string name="location_unavailable">location unavailable</string>
 </resources>

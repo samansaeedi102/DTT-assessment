@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Theme.Housify" parent="android:Theme.Material.NoActionBar">
         <item name="android:statusBarColor">@color/dark_status</item>
     </style>
 
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FFF65541</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_dtt</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="android:statusBarColor">@color/light_status</item>
+        <item name="android:navigationBarColor">@color/light_status</item>
+        <item name="postSplashScreenTheme">@style/Theme.Housify</item>
+    </style>
 
 </resources>

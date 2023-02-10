@@ -22,6 +22,9 @@ fun HousifyHome(
     bottomBarNavController: NavHostController = rememberNavController(),
     screenNavController: NavController,
 ) {
+    /**
+     * Shows bottomBar with option(Home and About)
+     */
     Scaffold(
         bottomBar = { BottomBar(navController = bottomBarNavController) }
     ) {

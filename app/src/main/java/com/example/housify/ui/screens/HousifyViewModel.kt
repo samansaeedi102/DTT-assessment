@@ -1,8 +1,6 @@
 package com.example.housify.ui.screens
 
-import android.content.ContentValues.TAG
 import android.location.Location
-import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,6 +22,9 @@ import javax.inject.Inject
 
 /**
  * Provides state for updating UI
+ * @property searchUnsuccessful goes true when no house is found.
+ * @property currentSearchedTerm stands for the term user enters in search bar
+ * @property noInternet goes true when user has no access to internet
  */
 data class UiState(
     var searchUnsuccessful: Boolean = false,
@@ -31,6 +32,16 @@ data class UiState(
     val noInternet: Boolean = false
 )
 
+/**
+ * Provides viewModel for the whole application
+ * @property uiState is used to keep the state the same on compositions.
+ * @property isLoading is used for SplashScreen and goes false when SplashScreen vanishes.
+ * @property housesList holds the list of houses loaded from API.
+ * @property selectedHouse represents the house chosen by the user.
+ * @property userCurrentLat is the user current location latitude.
+ * @property userCurrentLng is the user current location longitude.
+ * @property locationPermissionGranted goes true when user grants the permission to location.
+ */
 @HiltViewModel
 class HousifyViewModel @Inject constructor(private val housifyRepository: HousifyRepository) :
     ViewModel() {
@@ -46,25 +57,32 @@ class HousifyViewModel @Inject constructor(private val housifyRepository: Housif
         private set
 
     private var _userCurrentLng = mutableStateOf(0.0)
-    var userCurrentLng: MutableState<Double> = _userCurrentLng
+    private var userCurrentLng: MutableState<Double> = _userCurrentLng
 
     private var _userCurrentLat = mutableStateOf(0.0)
-    var userCurrentLat: MutableState<Double> = _userCurrentLat
-
-    var userLatLng: LatLng = LatLng(userCurrentLat.value, userCurrentLng.value)
+    private var userCurrentLat: MutableState<Double> = _userCurrentLat
 
     private var _locationPermissionGranted = MutableLiveData(false)
     var locationPermissionGranted: LiveData<Boolean> = _locationPermissionGranted
 
+    /**
+     * Allocates user's current location to latitude and longitude holders.
+     */
     fun currentUserLatLng(latLng: LatLng) {
         _userCurrentLat.value = latLng.latitude
         _userCurrentLng.value = latLng.longitude
     }
 
+    /**
+     * Gets set to true or false depending on users choice.
+     */
     fun grantLocationPermission(setGranted: Boolean) {
         _locationPermissionGranted.value = setGranted
     }
 
+    /**
+     * Holds the selectedHouse by user and if user selected another, gets updated.
+     */
     fun selectedHouseChanged(newHouse: HousifyHouse) {
         selectedHouse = newHouse
     }
@@ -84,12 +102,8 @@ class HousifyViewModel @Inject constructor(private val housifyRepository: Housif
     }
 
     /**
-     * Load all the houses from API and if the permission is granted, calculated distance of user
-     * to each house and omit the space in ZIP property to follow design and maker search consistent.
-     * Because in design zip code has no space between digits and letters, but the zip code loaded from
-     * the API has a space by default.
+     * Simulate the delay needs for SplashScreen
      */
-
     init {
         viewModelScope.launch {
             delay(1000)
@@ -97,6 +111,12 @@ class HousifyViewModel @Inject constructor(private val housifyRepository: Housif
         }
     }
 
+    /**
+     * Load all the houses from API and if the permission is granted, calculated distance of user
+     * to each house and omit the space in ZIP property to follow design and maker search consistent.
+     * Because in design zip code has no space between digits and letters, but the zip code loaded from
+     * the API has a space by default.
+     */
     fun getHouses() {
         val results = FloatArray(1)
         viewModelScope.launch {
@@ -114,7 +134,6 @@ class HousifyViewModel @Inject constructor(private val housifyRepository: Housif
                         it.distance = (results[0].toInt()) / 1000
                         it.zip = it.zip.replace("\\s".toRegex(), "")
                         it.fullAddress = it.zip.plus(" ").plus(it.city)
-                        Log.d(TAG, "${it.fullAddress} injas")
                     }
                 }
                 _uiState.update {
@@ -172,13 +191,18 @@ class HousifyViewModel @Inject constructor(private val housifyRepository: Housif
         }
     }
 
-
+    /**
+     * Holds and updates the searched term by the user.
+     */
     fun updateSearchedTerm(term: String) {
         _uiState.update {
             it.copy(currentSearchedTerm = term)
         }
     }
 
+    /**
+     * If user tries to go out of Empty search screen, this function makes the currentSearchTerm empty.
+     */
     fun deleteSearchedTerm() {
         _uiState.update {
             it.copy(currentSearchedTerm = "")
