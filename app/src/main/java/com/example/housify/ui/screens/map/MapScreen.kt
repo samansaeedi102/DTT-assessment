@@ -7,11 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
+import com.example.housify.R
+import com.example.housify.data.network.Constant.GOOGLE_APP
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -27,6 +30,7 @@ fun MapScreen(location: LatLng, onReady: (GoogleMap) -> Unit) {
     val mapView = remember { MapView(context) }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     lifecycle.addObserver(RememberMapLifeCycle(map = mapView))
+    val uri = stringResource(R.string.URI, "${location.latitude}", "${location.longitude}")
     AndroidView(factory = {
         mapView.apply {
             mapView.getMapAsync {
@@ -39,9 +43,9 @@ fun MapScreen(location: LatLng, onReady: (GoogleMap) -> Unit) {
                 it.setOnMapClickListener {
                     val intent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("google.navigation:q=${location.latitude},${location.longitude}&mode=l")
+                        Uri.parse(uri)
                     )
-                    intent.setPackage("com.google.android.apps.maps")
+                    intent.setPackage(GOOGLE_APP)
                     startActivity(context, intent, null)
                 }
             }

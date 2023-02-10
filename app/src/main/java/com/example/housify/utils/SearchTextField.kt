@@ -55,7 +55,7 @@ fun SearchTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color.Gray,
+            textColor = Color.Black,
             disabledTextColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,

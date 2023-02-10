@@ -33,7 +33,7 @@ fun HousifyAboutScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = stringResource(R.string.lorem),
-            style = MaterialTheme.typography.body2, color = MaterialTheme.colors.onSurface
+            style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onSurface
         )
         Spacer(modifier = Modifier.height(40.dp))
         Text(

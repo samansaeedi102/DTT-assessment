@@ -2,17 +2,20 @@ package com.example.housify.ui
 
 import android.location.Location
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -39,25 +42,10 @@ fun HousifyDetailsScreen(viewModel: HousifyViewModel, onBackClick: () -> Unit) {
     val house = viewModel.selectedHouse
     val scroll: ScrollState = rememberScrollState(0)
     if (house != null) {
-        CollapsingToolbar(house = house, scroll = scroll, onBackClick = onBackClick)
+        CollapsingToolBar(house = house, onBackClick = onBackClick)
     }
 }
 
-/**
- * Loads selected house image.
- */
-@Composable
-fun DetailsImage(house: HousifyHouse) {
-    AsyncImage(
-        model = ImageRequest.Builder(context = LocalContext.current)
-            .data(stringResource(id = R.string.house_image_api, house.image))
-            .crossfade(true)
-            .build(),
-        modifier = Modifier.fillMaxSize(),
-        contentDescription = stringResource(R.string.selected_house),
-        contentScale = ContentScale.Crop
-    )
-}
 
 /**
  * Provides container for all the details of selected house.
@@ -70,8 +58,9 @@ fun DetailsCard(house: HousifyHouse) {
     Card(
         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         modifier = Modifier
-            .border((-1).dp, color = Color.Transparent)
             .fillMaxHeight()
+            .offset(y = (-15).dp),
+        elevation = 0.dp
     ) {
         Column(
             Modifier
@@ -89,7 +78,7 @@ fun DetailsCard(house: HousifyHouse) {
             Spacer(modifier = Modifier.height(18.dp))
             Text(text = stringResource(R.string.description), style = MaterialTheme.typography.h1)
             Spacer(modifier = Modifier.height(13.dp))
-            Text(text = house.description, color = MaterialTheme.colors.onSurface)
+            Text(text = house.description, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.body1)
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = stringResource(R.string.location), style = MaterialTheme.typography.h1)
             Spacer(modifier = Modifier.height(10.dp))
@@ -106,80 +95,62 @@ fun DetailsCard(house: HousifyHouse) {
     }
 }
 
-/**
- * Minimizes image in case of scrolling details of the house.
- */
+
 @Composable
-fun CollapsingToolbar(
+fun CollapsingToolBar(
     house: HousifyHouse,
-    scroll: ScrollState,
     onBackClick: () -> Unit
 ) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = MaterialTheme.colors.background)) {
-        Header(house)
-        Cover(house, scroll = scroll)
-        Body(house, scroll)
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
-            contentDescription = stringResource(R.string.back),
-            modifier = Modifier
-                .padding(start = 20.dp, top = 30.dp)
-                .clickable { onBackClick() },
-            tint = Color.White
-        )
-    }
-}
+    val lazyListState = rememberLazyListState()
+    var scrolledY = 0f
+    var previousOffset = 0
+    Scaffold(
+        content = {
+            LazyColumn(
+                Modifier.fillMaxSize().background(color = MaterialTheme.colors.surface),
+                lazyListState,
+            ) {
+                item {
+                    Box {
+                        AsyncImage(
+                            model = ImageRequest.Builder(context = LocalContext.current)
+                                .data(stringResource(id = R.string.house_image_api, house.image))
+                                .crossfade(true)
+                                .build(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .graphicsLayer {
+                                    scrolledY += lazyListState.firstVisibleItemScrollOffset - previousOffset
+                                    translationY = scrolledY * 0.5f
+                                    previousOffset = lazyListState.firstVisibleItemScrollOffset
+                                }
+                                .height(240.dp)
+                                .fillMaxWidth(),
+                            contentDescription = stringResource(R.string.selected_house),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                }
+                item {
+                    Column(Modifier.height(700.dp)) {
+                        DetailsCard(house = house)
+                    }
 
-/**
- * Provides height from the top.
- */
-val headerHeight = 255.dp
-
-/**
- * Shows the image in the header of collapsing toolbar
- */
-@Composable
-private fun Header(house: HousifyHouse) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(headerHeight)
-    ) {
-        DetailsImage(house = house)
-    }
-}
-
-/**
- * Shows selected house details in bottom of collapsing toolbar
- */
-@Composable
-private fun Body(house: HousifyHouse, scroll: ScrollState) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .verticalScroll(scroll)
-    ) {
-        Spacer(Modifier.height(headerHeight))
-        DetailsCard(house = house)
-    }
-}
-
-/**
- * Creates a cover on the header of collapsing toolbar in order to meet design requirements.
- */
-@Composable
-private fun Cover(house: HousifyHouse, scroll: ScrollState) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .verticalScroll(scroll)
-            .offset(y = (-15).dp)
-    ) {
-        Spacer(Modifier.height(headerHeight))
-        DetailsCard(house = house)
-    }
+                }
+            }
+        },
+        floatingActionButton = {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
+                contentDescription = stringResource(R.string.back),
+                modifier = Modifier
+                    .offset(x = (-165).dp, y = (-720).dp)
+                    .clickable { onBackClick() },
+                tint = Color.White
+            )
+        },
+        floatingActionButtonPosition = FabPosition.Center
+    )
 }
 
 

@@ -5,9 +5,8 @@
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#FFF65541</item>
-
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_dtt</item>
-        <item name="windowSplashScreenAnimationDuration">10</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="android:statusBarColor">@color/light_status</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:navigationBarColor">@color/light_status</item>
@@ -19,6 +18,7 @@
         <item name="android:statusBarColor">@color/light_status</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
+
     <style name="Theme.Housify.NoActionBar">
         <item name="android:windowActionBar">true</item>
         <item name="android:windowNoTitle">true</item>

@@ -119,4 +119,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-permissions:0.25.0"
     implementation 'com.google.maps.android:android-maps-utils:2.3.0'
 
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.1.0-alpha03"
+
+
 }
