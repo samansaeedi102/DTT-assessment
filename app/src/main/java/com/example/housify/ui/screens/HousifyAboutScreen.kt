@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.housify.R
 import com.example.housify.utils.HyperlinkText
+import com.example.housify.utils.spacing
 
 /**
  * Shows DTT company information.
@@ -23,43 +23,48 @@ fun HousifyAboutScreen(modifier: Modifier = Modifier) {
     Column(
         modifier
             .fillMaxSize()
-            .padding(start = 30.dp, top = 40.dp, end = 30.dp, bottom = 50.dp)
+            .padding(
+                start = MaterialTheme.spacing.startPadding,
+                top = MaterialTheme.spacing.topPadding,
+                end = MaterialTheme.spacing.endPadding,
+                bottom = MaterialTheme.spacing.bottomPadding
+            )
             .background(MaterialTheme.colors.background)
     ) {
         Text(
             text = stringResource(R.string.about),
             style = MaterialTheme.typography.h1
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
         Text(
             text = stringResource(R.string.lorem),
             style = MaterialTheme.typography.body1, color = MaterialTheme.colors.onSurface
         )
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
         Text(
             text = stringResource(R.string.design),
             style = MaterialTheme.typography.h1
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 15.dp),
+                .padding(top = MaterialTheme.spacing.extraSmall),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(R.drawable.dtt_banner),
                 contentDescription = stringResource(R.string.DTT_banner),
                 modifier
-                    .width(120.dp)
-                    .height(40.dp)
+                    .width(MaterialTheme.spacing.bannerWidth)
+                    .height(MaterialTheme.spacing.extraLarge)
             )
-            Spacer(modifier = Modifier.width(20.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.large))
             Column {
                 Text(text = stringResource(R.string.by_DTT), style = MaterialTheme.typography.caption)
                 HyperlinkText(
-                    fullText = "d-tt.nl", linkText = listOf("d-tt.nl"),
-                    hyperlinks = listOf("https://www.d-tt.nl/")
+                    fullText = stringResource(R.string.dtt_hyperlink_text), linkText = listOf(stringResource(R.string.dtt_hyperlink_text)),
+                    hyperlinks = listOf(stringResource(R.string.dtt_url))
                 )
             }
         }

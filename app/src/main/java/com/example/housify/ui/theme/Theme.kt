@@ -5,6 +5,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import com.example.housify.utils.LocalSpacing
+import com.example.housify.utils.Spacing
 
 private val darkColorPalette = darkColors(
     primaryVariant = strong
@@ -27,11 +30,12 @@ fun HousifyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
     } else {
         lightColorPalette
     }
-
-    MaterialTheme(
-        colors = colors,
-        typography = typography,
-        shapes = shapes,
-        content = content
-    )
+    CompositionLocalProvider(LocalSpacing provides Spacing()) {
+        MaterialTheme(
+            colors = colors,
+            typography = typography,
+            shapes = shapes,
+            content = content
+        )
+    }
 }

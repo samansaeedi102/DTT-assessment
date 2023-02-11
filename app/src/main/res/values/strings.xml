@@ -28,4 +28,6 @@
     <string name="URI"><![CDATA[google.navigation:q=%1s,%2s&mode=l]]></string>
     <string name="search_for_a_house">Search for a home</string>
     <string name="location_unavailable">location unavailable</string>
+    <string name="dtt_hyperlink_text">d-tt.nl</string>
+    <string name="dtt_url">https://www.d-tt.nl/</string>
 </resources>

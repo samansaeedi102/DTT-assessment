@@ -10,6 +10,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
+import com.example.housify.data.network.Constant.HYPERLINK_URL_TAG
 
 /**
  * Make linked text to be shown in AboutScreen
@@ -41,7 +42,7 @@ fun HyperlinkText(
                 end = endIndex
             )
             addStringAnnotation(
-                tag = "URL",
+                tag = HYPERLINK_URL_TAG,
                 annotation = hyperlinks[index],
                 start = startIndex,
                 end = endIndex
@@ -61,7 +62,7 @@ fun HyperlinkText(
         text = annotatedString,
         onClick = {
             annotatedString
-                .getStringAnnotations("URL", it, it)
+                .getStringAnnotations(HYPERLINK_URL_TAG, it, it)
                 .firstOrNull()?.let { stringAnnotation ->
                     uriHandler.openUri(stringAnnotation.item)
                 }

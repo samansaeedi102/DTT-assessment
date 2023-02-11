@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -32,6 +31,7 @@ import com.example.housify.ui.screens.ErrorScreen
 import com.example.housify.ui.screens.HousifyViewModel
 import com.example.housify.utils.HouseIconsRow
 import com.example.housify.utils.SearchTextField
+import com.example.housify.utils.spacing
 
 /**
  * Provides all the content needed for the home page.
@@ -51,13 +51,18 @@ fun HousifyHomeScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 30.dp, top = 40.dp, end = 30.dp, bottom = 50.dp),
+                .padding(
+                    start = MaterialTheme.spacing.startPadding,
+                    top = MaterialTheme.spacing.topPadding,
+                    end = MaterialTheme.spacing.endPadding,
+                    bottom = MaterialTheme.spacing.bottomPadding
+                )
         ) {
             Text(
                 text = stringResource(id = R.string.home_header),
                 style = MaterialTheme.typography.h1
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
             SearchTextField(
                 value = uiState.currentSearchedTerm,
                 onCloseClick = {
@@ -83,7 +88,7 @@ fun HousifyHomeScreenContent(
                 focusRequester = searchTextFieldFocusRequester,
                 placeholder = stringResource(R.string.search_for_a_house)
             )
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxxSmall))
 
             //Loads error screen if user has no access to internet.
             if (uiState.noInternet) {
@@ -118,14 +123,14 @@ fun HouseCard(
     onHouseClick: (HousifyHouse) -> Unit,
 ) {
     Card(
-        elevation = 4.dp,
+        elevation = MaterialTheme.spacing.smallElevation,
         onClick = { onHouseClick(house) },
-        modifier = Modifier.padding(0.dp, 9.dp)
+        modifier = Modifier.padding(MaterialTheme.spacing.default, MaterialTheme.spacing.xxxSmall)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(MaterialTheme.spacing.small)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(context = LocalContext.current)
@@ -135,10 +140,10 @@ fun HouseCard(
                 contentDescription = stringResource(id = R.string.house_image_home),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(90.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .size(MaterialTheme.spacing.houseSizeOnCard)
+                    .clip(RoundedCornerShape(MaterialTheme.spacing.xxxSmall))
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxSmall))
             Column {
                 Text(
                     text = stringResource(id = R.string.house_price, "%,d".format(house.price)),
@@ -146,10 +151,10 @@ fun HouseCard(
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = house.zip, color = MaterialTheme.colors.onSurface)
-                    Spacer(modifier = Modifier.width(5.dp))
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxixSmall))
                     Text(text = house.city, color = MaterialTheme.colors.onSurface)
                 }
-                Spacer(modifier = Modifier.height(25.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.startPadding))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     HouseIconsRow(house.bedrooms, house.bathrooms, house.size, house.distance)
                 }
